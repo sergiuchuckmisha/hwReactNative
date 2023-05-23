@@ -23,6 +23,51 @@ lib-cov
 coverage
 *.lcov
 
+# ios/Pods,
+ios/Pods/
+
+# OS X temporary files that should never be committed
+.DS_Store
+src/components/.DS_Store
+
+# user personal info,for example debug info
+ios/ProjectName.xcodeproj/project.xcworkspace/
+ios/ProjectName.xcodeproj/xcuserdata
+
+# Podfile versions
+ios/Podfile.lock
+
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IntelliJ
+#
+.idea
+.gradle
+local.properties
+*.iml
+
 # nyc test coverage
 .nyc_output
 
@@ -41,6 +86,33 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+
+# node.js
+#
+package-lock.json # include if you are using npm - don't use both yarn and npm
+npm-debug.log
+yarn-error.log
+yarn.lock # include if you are using yarn - don't use both npm and yarn
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+
+# Fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use Fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -128,3 +200,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+/vendor/bundle/ruby/3.0.0/
