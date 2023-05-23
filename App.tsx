@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -24,6 +24,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Messages from "./src/Messages";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -72,6 +73,7 @@ function App(): JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
+        {/*<Messages messages ={[1, 2]} newMessage={undefined}/>*/}
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
