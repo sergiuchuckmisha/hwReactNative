@@ -1,7 +1,7 @@
 import axios from "axios";
 import WebSocket from "isomorphic-ws";
 
-export const serverUrl = "ws://206.189.101.71:8088"
+export const serverUrlWs = "ws://206.189.101.71:8088"
 
 export function compareArrays(ar1: any[], ar2: any[]) {
     return JSON.stringify(ar1) === JSON.stringify(ar2);
@@ -13,10 +13,10 @@ export function httpCall(onfulfilled: (data: any) => void) {
 }
 
 export function initWebSocketConnection(onMessage: (data: any) => void) {
-    let wss = new WebSocket(serverUrl)
-    console.log("wss: ", wss)
-    wss.onopen = () => wss.send("ping")
-    wss.onmessage = ({data}) => {
+    global.wss = new WebSocket(serverUrlWs)
+    console.log("global.wss: ", global.wss)
+    global.wss.onopen = () => wss.send("ping")
+    global.wss.onmessage = ({data}) => {
         try {
             // alert(data)
             console.log(data)
