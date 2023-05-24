@@ -1,4 +1,4 @@
-import {compareArrays} from "./utils";
+import {compareArrays, httpCall} from "./utils";
 
 
 it('tmp', () => {
@@ -16,3 +16,10 @@ describe('compareArrays', () => {
 })
 
 
+it('httpCall', done => {
+    httpCall(data => {
+        console.log(data)
+        expect(data).toContain("8080")
+        done()
+    })
+});

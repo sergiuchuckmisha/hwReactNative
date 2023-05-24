@@ -4,7 +4,7 @@ import {Colors} from "react-native/Libraries/NewAppScreen";
 // import {initWssConnection} from "./ws";
 // import {tmp} from "./ws";
 import axios from "axios/index";
-import {compareArrays} from "./utils";
+import {compareArrays, httpCall} from "./utils";
 import WebSocket from "isomorphic-ws";
 
 
@@ -18,18 +18,16 @@ const Messages = ({messages = [], style = {}}) => {
     //     console.log("Is connected?", state.isConnected);
     // });
 
-    axios.get(`http://206.189.101.71:8080/`)
-        .then(r => {
-            console.log("typeof [r.data]: ", typeof [r.data])
-            console.log("[r.data] instanceof Array: ", [r.data] instanceof Array)
-            console.log("[r.data].equals: ", [r.data].equals)
-            if (!compareArrays([r.data], messages_)) {
-                setMessages_([r.data])
-                alert(1)
-            }
-        })
-        // .then(r => alert(r))
-        // .then(r => console.log(r))
+    httpCall(data => {
+        console.log("onfulfilled: typeof [r.data]: ", typeof [data])
+        console.log("onfulfilled: typeof [r.data]: ", typeof [data])
+        console.log("onfulfilled: [r.data] instanceof Array: ", [data] instanceof Array)
+        // console.log("[r.data].equals: ", [data].equals)
+        if (!compareArrays([data], messages_)) {
+            setMessages_([data])
+            alert(1)
+        }
+    });
 
     let wss = new WebSocket(serverUrl)
     console.log("wss: ", wss)
