@@ -5,17 +5,9 @@
  * @format
  */
 
-import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react';
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View,} from 'react-native';
 
 import {
   Colors,
@@ -25,6 +17,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Messages from "./src/Messages";
+import {extracted} from "./src/Extracted";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -63,6 +56,8 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  extracted();
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -73,7 +68,7 @@ function App(): JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        {/*<Messages messages ={[1, 2]} newMessage={undefined}/>*/}
+        <Messages messages ={[1, 2]} newMessage={undefined}/>
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
