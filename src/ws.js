@@ -3,9 +3,21 @@ const WebSocket = require('isomorphic-ws')
 
 const serverUrl = "ws://206.189.101.71:8088"
 
+// const wss = new WebSocket(serverUrl)
+
+export function tmp (f) {
+    if ('function' === typeof f) {
+        f("data")
+    }
+}
+
 export function initWssConnection (f) {
+    console.log("hello from initWssConnection; WebSocket: ", WebSocket)
+    console.log("hello from initWssConnection; new WebSocket(serverUrl): ", new WebSocket())
+    const wss = new WebSocket(serverUrl)
     console.log('initializing wss connection at', new Date());
-    global.wss = new WebSocket(serverUrl);
+    console.log(wss)
+    global.wss = wss;
 
     wss.onopen = () => {
         wss.send("ping");
