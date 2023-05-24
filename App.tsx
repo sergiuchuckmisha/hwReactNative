@@ -1,115 +1,96 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import * as React from 'react';
+import { Text, View, StyleSheet, TextInput, Button, ScrollView } from 'react-native';
+import {serverUrlWs} from "./src/utils";
 
-import type {PropsWithChildren} from 'react';
-import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View,} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Messages from "./src/Messages";
-import {extracted} from "./src/Extracted";
+export default function App() {
+    const [serverState, setServerState] = React.useState('Loading...');
+    const [messageText, setMessageText] = React.useState('');
+    const [disableButton, setDisableButton] = React.useState(true);
+    const [inputFieldEmpty, setInputFieldEmpty] = React.useState(true);
+    const [serverMessages, setServerMessages] = React.useState([]);
+    var ws = React.useRef(new WebSocket(serverUrlWs)).current;
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    React.useEffect(() => {
+        const serverMessagesList = [];
+        ws.onopen = () => {
+            setServerState('Connected to the server')
+            setDisableButton(false);
+        };
+        ws.onclose = (e) => {
+            setServerState('Disconnected. Check internet or server.')
+            setDisableButton(true);
+        };
+        ws.onerror = (e) => {
+            setServerState(e.message);
+        };
+        ws.onmessage = (e) => {
+            serverMessagesList.push(e.data);
+            setServerMessages([...serverMessagesList])
+        };
+    }, [])
+    const submitMessage = () => {
+        ws.send(messageText);
+        setMessageText('')
+        setInputFieldEmpty(true)
+    }
+    return (
+        <View style={styles.container}>
+        <View style={{
+        height: 30,
+            backgroundColor: '#eeceff',
+            padding: 5
+    }}>
+<Text>{serverState}</Text>
     </View>
-  );
+    <View style={{
+        backgroundColor: '#ffeece',
+            padding: 5,
+            flexGrow: 1
+    }}>
+<ScrollView>
+    {
+        serverMessages.map((item, ind) => {
+            return (
+                <Text key={ind}>{item}</Text>
+        )
+        })
+    }
+    </ScrollView>
+    </View>
+    <View style={{
+        flexDirection: 'row',
+    }}>
+<TextInput style={{
+        borderWidth: 1,
+            borderColor: 'black',
+            flexGrow: 1,
+            padding: 5,
+    }}
+    placeholder={'Add Message'}
+    onChangeText={text => {
+        setMessageText(text)
+        setInputFieldEmpty(text.length > 0 ? false : true)
+    }}
+    value={messageText}
+    />
+    <Button
+    onPress={submitMessage}
+    title={'Submit'}
+    disabled={disableButton || inputFieldEmpty}
+    />
+    </View>
+
+    </View>
+);
 }
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  extracted();
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <Messages messages ={[1, 2]} newMessage={undefined}/>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+    container: {
+        flex: 1,
+        backgroundColor: '#ecf0f1',
+        paddingTop: 30,
+        padding: 8,
+    },
 
-export default App;
+});
