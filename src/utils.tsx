@@ -29,4 +29,12 @@ export function initWebSocketConnection(onMessage: (data: any) => void) {
             console.log(e)
         }
     };
+
+    global.wss.onclose = function close() {
+        console.log('disconnected');
+        if (global.shouldBeAlive) {
+            console.log('trying to reconnect at', new Date());
+            initWebSocketConnection(onMessage)
+        }
+    }
 }
